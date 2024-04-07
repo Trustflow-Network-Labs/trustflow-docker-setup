@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  postgres:
+    env_file:
+      - path: ../trustflow-database/.env
+        required: true
+    build:
+      context: .
+      dockerfile: docker/postgres/Dockerfile
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d/
+      - ./docker/volumes/postgres-data:/var/lib/postgresql/data
+      - ./docker/postgres/import:/import
