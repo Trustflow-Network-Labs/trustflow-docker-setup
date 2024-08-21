@@ -1,17 +1,17 @@
 containers-up:
-	docker-compose up
+	docker compose up
 
 containers-stop:
-	docker-compose stop
+	docker compose stop
 
 reset-db:
-	docker-compose up -d postgres
+	docker compose up -d postgres
 	sleep 20
 	cd ../trustflow-database/ && cat 00*.sql 01*.sql 02*.sql 03*.sql 04*.sql 05*.sql > ../trustflow-docker-setup/docker/postgres/import/import.sql
 	@make import-db
 
 import-db:
-	docker-compose exec -T postgres psql -d postgres -U postgres -f /import/import.sql
+	docker compose exec -T postgres psql -d postgres -U postgres -f /import/import.sql
 
 skeleton:
 	git clone git@github.com:adgsm/trustflow-database ../trustflow-database
