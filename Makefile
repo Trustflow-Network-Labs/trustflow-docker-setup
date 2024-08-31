@@ -1,5 +1,6 @@
 containers-up:
 	docker compose up
+#	docker compose exec postgres /bin/bash
 
 containers-stop:
 	docker compose stop
@@ -25,17 +26,14 @@ skeleton:
 
 setup:
 	@make skeleton
-	@make containers-up &
-	sleep 20
 	@make reset-db
 
 start:
-	@make containers-up &
-	sleep 5
-	cd ../trustflow-node && go run main.go &
-	sleep 5
-	lsof -ti :30609 > /tmp/trustflow-node.pid
+	@make containers-up
+
+restart:
+	@make reset-db
+	@make containers-up
 
 stop:
-	kill `cat /tmp/trustflow-node.pid` || true
 	@make containers-stop
